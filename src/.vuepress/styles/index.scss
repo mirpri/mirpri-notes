@@ -1,5 +1,20 @@
 // place your custom styles here
 #navbar{
+    background: transparent !important;
+    margin: 5px auto;
+    width: calc(100% - 20px);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+#navbar::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    transition: all 0.3s ease;
+
     /* keep the animated gradient but make it semi-transparent so we can see blur behind it */
     background: linear-gradient(90deg,
         rgba(243,144,147,0.65),
@@ -16,10 +31,17 @@
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
 
-    margin: 5px auto;
-    width: calc(100% - 20px);
-    border-radius: 12px;
-    transition: all 0.3s ease;
+    /* Setup mask for smooth fade transition */
+    -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
+    -webkit-mask-size: 100% 200%;
+    mask-size: 100% 200%;
+    -webkit-mask-position: top;
+    mask-position: top;
+}
+
+[data-theme="dark"] #navbar::before {
+    filter: brightness(0.6);
 }
 
 html.at-top #navbar {
@@ -27,7 +49,13 @@ html.at-top #navbar {
     margin-top: 0;
     border-radius: 0;
     box-shadow: none;
+}
+
+html.at-top #navbar::before {
     backdrop-filter: none;
+    /* Shift mask up to reveal the faded bottom */
+    -webkit-mask-position: bottom;
+    mask-position: bottom;
 }
 
 .hide-navbar .vp-navbar.auto-hide {
@@ -56,5 +84,9 @@ html.at-top #navbar {
 .toggle-sidebar-wrapper:hover{
     opacity: 1;
     background-color: var(--sidebar-c-bg);
+}
+
+.vp-nav-logo {
+    opacity: 0.7;
 }
 

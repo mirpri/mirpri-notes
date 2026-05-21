@@ -9,7 +9,8 @@ export default hopeTheme({
     url: "https://mirpri.github.io",
   },
 
-  logo: "/logo.png",
+  logo: "/logo-black.svg",
+  logoDark: "/logo-white.svg",
 
   repo: "mirpri/mirnotes",
 
