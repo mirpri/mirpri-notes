@@ -40,19 +40,54 @@ public class ThreadTest {
 
 ## 线程同步
 
+只读的线程是安全的，不用上锁。
+
 ### synchronized
 
-隐式地在对象实例或类上加锁
+隐式地在**对象实例**或**类**上加锁
 
 **同步方法**
 - 静态方法中，对整个类上锁
 - 动态方法中，对该对象上锁
+
+上锁后，锁住了该对象/类所有的同步方法。
+类的锁和对象的锁是独立的。即静态锁不影响实例方法，对象锁不影响静态方法。
+
+```java
+public synchronized void A() {
+	// ...
+}
+
+// 等价于：
+public void A() {
+    synchronized(this) {
+	    // ...
+    }
+}
+
+public static synchronized void B() {
+	// ...
+}
+
+// 等价于：
+public static void B() {
+	synchronized(B.class) {
+		// ...
+	}
+}
+```
 
 **同步语句块**
 对表达式对象加锁，`expr`必须是对一个对象的引用
 ```java
 synchronized (expr) {   statements;  }
 ```
+
+#### wait/notify
 ### Lock
 
 显式的加锁
+
+`ReentrantLock`: 可重入的锁
+
+#### await/signal
