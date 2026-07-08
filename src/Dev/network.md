@@ -1,0 +1,31 @@
+# Network
+
+## pip
+```
+pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
+```
+
+## huggingface
+```
+export HF_ENDPOINT=https://hf-mirror.com
+```
+
+## conda
+```
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/pytorch/
+conda config --set show_channel_urls yes
+```
+
+## 用ssh代理
+本地clash监听7897端口，让远程主机也走本地代理
+```
+ssh -R 7890:127.0.0.1:7897 -N <host>
+```
+在远程主机的终端启用代理
+```
+export http_proxy=http://127.0.0.1:7890
+export https_proxy=http://127.0.0.1:7890
+```

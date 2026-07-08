@@ -35,7 +35,7 @@ add this line:
 ```
 set -g fish_greeting
 ```
-to `~/.config/fish/config.fish`
+to `~/.config/fish/config.fish` (This is fish's config file like bash's `~/.bashrc`)
 
 Change welcome message:
 
@@ -48,6 +48,23 @@ Display system info:
 ```
 set -l os_info (grep "PRETTY_NAME" /etc/os-release | cut -d '"' -f 2)
 set -g fish_greeting "Welcome to $os_info!"
+```
+
+### Environment variables
+Fish uses `set -x` (instead of `export` in bash) to set environment variables.
+
+Add to path:
+
+```
+set -x PATH $PATH /path/to/your/bin
+```
+
+Set http proxy:
+
+```
+set -x http_proxy http://127.0.0.1:7890
+set -x https_proxy http://127.0.0.1:7890
+set -x all_proxy socks5://127.0.0.1:7890
 ```
 
 ## mpv

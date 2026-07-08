@@ -24,13 +24,13 @@ public static boolean equals(Object a, Object b) {
 - protected：子类、**同一包**中的类的函数可以访问。
 - public：  所有类的函数都可以访问。
 
-| 访问权限       | 本类  | 本包  | 子类  | 它包  |
-| ---------- | --- | --- | --- | --- |
-| public     | √   | √   | √   | √   |
-| protected  | √   | √   | √   | X   |
-| **包级(默认)** | √   | √   | X   | X   |
-| private    | √   | X   | X   | X   |
-
+| 访问权限       | 本类  | 本包  | 子类（它包） | 它包  |
+| ---------- | --- | --- | ------ | --- |
+| public     | √   | √   | √      | √   |
+| protected  | √   | √   | √      | X   |
+| **包级(默认)** | √   | √   | X      | X   |
+| private    | √   | X   | X      | X   |
+静态方法不能使用`this`, `super`关键字和访问成员方法/属性
 ## 初始化块
 
 在 Java 中，**类的静态初始化块（Static Initialization Block）** 是指用 `static` 关键字修饰的、被大括号 `{}` 包围的一段代码。
@@ -99,21 +99,87 @@ class SuperClass {
 1. **提取构造函数间的公共代码：** 如果你的类有 4、5 个重载的构造函数，且每个构造函数都有一段相同的初始化逻辑（比如给某个复杂对象赋初值），你可以把这段逻辑写在 `{}` 里。这样你就不需要每个构造函数都去调用同一个私有方法了。    
 2. **匿名内部类的初始化：** 匿名内部类是没有名字的，所以它**没有构造函数**。如果你想在创建匿名内部类时执行一些逻辑，大括号 `{}` 就是你唯一的选择。
 
+第一次加载子类时的执行顺序：
+1. 父静态变量、静态初始化块（先装入类）
+2. 子静态变量、静态初始化块 
+3. 父实例变量（实例化对象）
+4. 父实例块
+5. 父构造
+6. 子实例变量
+7. 子实例块
+8. 子构造
+
 ## 析构？
 
 >==Java does **not have explicit destructors**== like those found in C++. Instead, memory management is handled automatically by the Java Virtual Machine (JVM) through a process called **garbage collection**. There is an inherited method called `finalize`, but this is called entirely at the discretion of the garbage collector and cannot be manually invoked. It has been officially deprecated and marked for removal.
 
+## 抽象类
+
+即使函数不含抽象方法，也可以被声明为抽象类。
 ## 继承
 
 java 中用 `extends` 关键字表示继承
 
+静态函数和属性只能被隐藏，不会被重写。出现这些情况时，隐藏的成员会被使用：
+1. Reference declared as parent type       Animal a = new Dog(); → a.x reveals
+2. Cast to parent type                     ((Animal)dog).x reveals
+3. Passed as parent type argument          void f(Animal a) → a.x reveals
+4. Parent's own method uses its members⭐    Animal.whoAmI() always sees Animal.type
+5. Explicit parent class access            Animal.method() / Animal.field
+
+
 *构造函数不能被继承*
 
-实现父类虚函数（抽象方法）”和“重写（Override）普通方法”，它们遵循的规则是完全一模一样的：
+实现父类抽象方法和重写普通方法，它们遵循的规则是完全一模一样的：
 1. 签名（Signature）：必须相同
 2. 可见性（访问权限）：可以不同，但只能“扩大”，不能“缩小”
 3. 返回值（Return Type）：子类重写方法的返回值，可以是父类方法返回值的“子类”
 
+
 ### 实现接口
 
 Java 不能多继承，但可以实现多个[接口](./interface)
+
+## 内部类
+
+在一个代码块（通常是函数体或方法体内部）定义的类
+- **作用域：** 仅在定义它的代码块或方法内部有效。
+- **访问权限：** 不能使用 `public`、`private` 等访问修饰符。
+- **变量访问：** 可以直接访问外部类的成员变量和方法；它还可以访问定义它的方法中的局部变量，但这些变量必须是***隐式或显式声明为 `final` 的***（effectively final）。
+
+:::info
+
+局部变量生命周期很短，方法执行完就销毁了；而内部类对象可能还存活在堆内存中。为了防止“变量没了对象还在”的尴尬，Java 在底层把这个变量**复制了一份**给匿名类。为了保证复制的那份数据和原本的数据绝对一致，Java 强行规定这个变量不能被修改。
+
+:::
+
+```
+Method/Block
+│
+└── class Local {         ← born here, dies here
+        - sees outer fields
+        - sees effectively final locals
+        - can implement interfaces
+        - can be instantiated multiple times
+        - invisible outside this block
+    }
+```
+
+## 匿名内部类
+
+```java
+new 父类名/接口名() { // 1. 在这里实现接口的方法，或者重写父类的方法 // 2. 这里也可以定义自己的属性和方法（但外部通常无法直接调用） };
+
+public void start(Stage primaryStage) {
+  // Omitted
+  btEnlarge.setOnAction(
+    new EventHandler<ActionEvent>() {
+	  @Override
+      public void handle(ActionEvent e) {
+        circlePane.enlarge();
+      }
+    });
+}
+```
+
+## lambda

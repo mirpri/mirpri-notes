@@ -87,7 +87,17 @@ synchronized (expr) {   statements;  }
 ### Lock
 
 显式的加锁
+`.lock()`：获取锁
+`.unlock()`：释放锁
 
 `ReentrantLock`: 可重入的锁
 
 #### await/signal
+
+### Semaphore
+
+信号量，相当于可以设置许可数量的锁
+`.acquire()`：获取许可
+`.release()`：释放许可
+，但也有区别：
+信号量不检查当前线程获取许可的状态，多次获取会占用多个许可，即使未获取也可以释放。
