@@ -61,6 +61,13 @@ iso文件分为在线安装版和离线安装版。
 
 重新启动后才可以成功打出汉字
 
+在新版的Ubuntu中，最简单的方式则是使用默认的 IBus:
+```bash
+sudo apt install ibus-libpinyin
+```
+然后通过图形界面添加键盘： Settings → Keyboard → Input Sources → + → Chinese → Intelligent Pinyin.
+若没有出现 Intelligent Pinyin 选项，需重启或注销再来。
+
 ### 开机自动挂载磁盘
 当你的系统有多个硬盘或分区时，可能需要在开机时自动挂载它们。Linux通过`/etc/fstab`文件来配置开机自动挂载。
 
@@ -146,6 +153,14 @@ ufw allow 22/tcp && ufw reload
 ```
 
 此时从windows端WinSCP新建连接，选择**SFTP**协议，输入linux设备的ip和用户名密码即可进入linux文件系统。
+
+### 安装 Extension Manager (Gnome桌面)
+
+用于安装一些插件，如剪贴板历史记录（推荐clipboard indicator）
+
+```bash
+sudo apt install gnome-shell-extension-manager
+```
 
 ## Handling problems
 

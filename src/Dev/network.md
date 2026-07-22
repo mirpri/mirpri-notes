@@ -19,6 +19,29 @@ conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/
 conda config --set show_channel_urls yes
 ```
 
+## go
+```
+# 七牛 (推荐)
+go env -w  GOPROXY=https://goproxy.cn,direct
+# 阿里
+go env -w GOPROXY=https://mirrors.aliyun.com/goproxy/,direct
+```
+
+## GitHub
+```
+# 配置 GitHub 镜像
+git config --global url."https://ghfast.top/https://github.com/".insteadOf "https://github.com/"
+# or
+git config --global url."https://gh-proxy.com/https://github.com/".insteadOf "https://github.com/"
+
+# 取消 GitHub 镜像
+git config --global --unset url.https://ghfast.top/https://github.com/.insteadOf
+git config --global url."https://gh-proxy.com/https://github.com/".insteadOf "https://github.com/"
+
+# 查看当前配置
+git config --global --get-regexp url
+```
+
 ## 用ssh代理
 本地clash监听7897端口，让远程主机也走本地代理
 ```
